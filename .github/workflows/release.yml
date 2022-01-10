@@ -44,7 +44,7 @@ jobs:
                   CMAKE_PREFIX_PATH: ${{env.Qt5_Dir}}
 
             - name: Build Installer
-              run: cmake --build '${{ github.workspace }}'/build --parallel 8
+              run: cmake --build '${{ github.workspace }}'/build --target package --parallel 8
 
             - name: Upload binaries to release
               uses: AButler/upload-release-assets@v2.0
