@@ -66,6 +66,27 @@ if(UNIX)
     option(APPDATA "Build project with AppData file support." ON)
 endif(UNIX)
 
+
+if(WIN32)
+    option(PORTABLE_PACKAGE "Create portable Windows package" ON)
+    if(PORTABLE_PACKAGE)
+        message("Portable package mode build")
+
+        add_definitions(-DWIN_PORTABLE_PACKAGE)
+
+        # Only way to force install target to be dependent on createprofiledir.
+        add_custom_target(createprofiledir)
+        add_custom_command(TARGET createprofiledir PRE_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/profiles"
+        )
+        install(CODE "execute_process(COMMAND ${CMAKE_BUILD_TOOL} createprofiledir WORKING_DIRECTORY \"${CMAKE_CURRENT_BINARY_DIR}\")")
+        install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/profiles" DESTINATION ${CMAKE_INSTALL_PREFIX})
+    endif(PORTABLE_PACKAGE)
+
+endif(WIN32)
+
+
+
 option(UPDATE_TRANSLATIONS "Call lupdate to update translation files from source." OFF)
 option(TRANS_KEEP_OBSOLETE "Add -noobsolete option to lupdate command to get rid of old text entries" OFF)
 option(ATTACH_FAKE_CLASSES "Fake classes can be used in application to tests functionalities" OFF)
