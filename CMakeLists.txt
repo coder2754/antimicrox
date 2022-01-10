@@ -68,7 +68,7 @@ endif(UNIX)
 
 
 if(WIN32)
-    option(PORTABLE_PACKAGE "Create portable Windows package" ON)
+    option(PORTABLE_PACKAGE "Create portable Windows package" OFF)
     if(PORTABLE_PACKAGE)
         message("Portable package mode build")
 
